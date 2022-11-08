@@ -32,6 +32,7 @@ class MainViewController: UITableViewController {
 
             
         return cell
+        
     }
   
 
