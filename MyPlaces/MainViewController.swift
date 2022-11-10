@@ -9,7 +9,9 @@ import UIKit
 
 class MainViewController: UITableViewController {
     
-    let cafeNames = [ "Mama Roma", "Tokyo City", "Giros", "Додо Пицца", "Теремок", "Cinnabon"]
+  
+    
+    var cafeName = Place.getPlaces()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,20 +23,22 @@ class MainViewController: UITableViewController {
 
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cafeNames.count
+        return cafeName.count
     }
 
  
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = cafeNames[indexPath.row]
-        cell.imageView?.image = UIImage(named: cafeNames[indexPath.row])
-
-            
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
+        cell.nameLabel.text = cafeName[indexPath.row].name[indexPath.row]
+        cell.imageOfPlaces.image = UIImage(named: cafeName[indexPath.row].image[indexPath.row])
+        cell.imageOfPlaces.layer.cornerRadius = cell.imageOfPlaces.frame.size.height / 2
+        cell.imageOfPlaces.clipsToBounds = true
+        
         return cell
         
     }
-  
+    
+
 
   
     /*
@@ -46,5 +50,6 @@ class MainViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    @IBAction func cancelAction(_ segue: UIStoryboardSegue) {}
 }
