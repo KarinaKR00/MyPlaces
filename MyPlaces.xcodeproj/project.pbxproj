@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9A699C2A291C0D5100FA01B0 /* ModelOfPlaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A699C29291C0D5100FA01B0 /* ModelOfPlaces.swift */; };
+		9A8C9546292AA95E00EEA474 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 9A8C9545292AA95E00EEA474 /* Realm */; };
+		9A8C9548292AA95E00EEA474 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A8C9547292AA95E00EEA474 /* RealmSwift */; };
+		9A8C954A292AB72600EEA474 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C9549292AB72600EEA474 /* StorageManager.swift */; };
 		9A923B8B2921574400A629FF /* NewPlaceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A923B8A2921574400A629FF /* NewPlaceTableViewController.swift */; };
 		9ABB03E9291A9A7E001FA8C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABB03E8291A9A7E001FA8C0 /* AppDelegate.swift */; };
 		9ABB03EB291A9A7E001FA8C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABB03EA291A9A7E001FA8C0 /* SceneDelegate.swift */; };
@@ -21,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		9A699C29291C0D5100FA01B0 /* ModelOfPlaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelOfPlaces.swift; sourceTree = "<group>"; };
+		9A8C9549292AB72600EEA474 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		9A923B8A2921574400A629FF /* NewPlaceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceTableViewController.swift; sourceTree = "<group>"; };
 		9ABB03E5291A9A7E001FA8C0 /* MyPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ABB03E8291A9A7E001FA8C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +43,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A8C9548292AA95E00EEA474 /* RealmSwift in Frameworks */,
+				9A8C9546292AA95E00EEA474 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +74,7 @@
 				9ABB0401291AA604001FA8C0 /* MainViewController.swift */,
 				9A923B8A2921574400A629FF /* NewPlaceTableViewController.swift */,
 				9A699C29291C0D5100FA01B0 /* ModelOfPlaces.swift */,
+				9A8C9549292AB72600EEA474 /* StorageManager.swift */,
 				9ABB0403291AF189001FA8C0 /* CustomTableViewCell.swift */,
 				9ABB03EA291A9A7E001FA8C0 /* SceneDelegate.swift */,
 				9ABB03EE291A9A7E001FA8C0 /* Main.storyboard */,
@@ -95,6 +102,10 @@
 			dependencies = (
 			);
 			name = MyPlaces;
+			packageProductDependencies = (
+				9A8C9545292AA95E00EEA474 /* Realm */,
+				9A8C9547292AA95E00EEA474 /* RealmSwift */,
+			);
 			productName = MyPlaces;
 			productReference = 9ABB03E5291A9A7E001FA8C0 /* MyPlaces.app */;
 			productType = "com.apple.product-type.application";
@@ -123,6 +134,9 @@
 				Base,
 			);
 			mainGroup = 9ABB03DC291A9A7E001FA8C0;
+			packageReferences = (
+				9A8C9544292AA95E00EEA474 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 9ABB03E6291A9A7E001FA8C0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -157,6 +171,7 @@
 				9A699C2A291C0D5100FA01B0 /* ModelOfPlaces.swift in Sources */,
 				9ABB0402291AA604001FA8C0 /* MainViewController.swift in Sources */,
 				9A923B8B2921574400A629FF /* NewPlaceTableViewController.swift in Sources */,
+				9A8C954A292AB72600EEA474 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +389,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9A8C9544292AA95E00EEA474 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.32.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9A8C9545292AA95E00EEA474 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A8C9544292AA95E00EEA474 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		9A8C9547292AA95E00EEA474 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A8C9544292AA95E00EEA474 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		9ABB03F1291A9A7E001FA8C0 /* MyPlaces.xcdatamodeld */ = {

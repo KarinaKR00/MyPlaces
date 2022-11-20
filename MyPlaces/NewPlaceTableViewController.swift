@@ -9,7 +9,7 @@ import UIKit
 
 class NewPlaceTableViewController: UITableViewController {
     
-    var newPlace: Place?
+    var newPlace = Place()
     var imageIsChanged = false
     
     @IBOutlet var saveButton: UIBarButtonItem!
@@ -21,6 +21,10 @@ class NewPlaceTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        DispatchQueue.main.async {
+            self.newPlace.getPlaces()
+        }
         
         tableView.tableFooterView = UIView()
         saveButton.isEnabled = false
@@ -43,14 +47,14 @@ class NewPlaceTableViewController: UITableViewController {
                 style: .default) { _ in
                     self.chooseInagePicker(sourse: .camera)
                 }
-           
+            
             
             let photo = UIAlertAction(
                 title: "Photo",
                 style: .default) { _ in
                     self.chooseInagePicker(sourse: .photoLibrary)
                 }
-    
+            
             
             let cancel = UIAlertAction(
                 title: "Cancel", style: .cancel)
@@ -75,60 +79,61 @@ class NewPlaceTableViewController: UITableViewController {
             image = UIImage(named: "eat")
         }
         
-        newPlace = Place(
-            name: placeName.text!,
-            location: placeLocation.text,
-            type: placeType.text,
-            image: image,
-            restorantImage: [])
-    }
-    
-    @IBAction func canselAction(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-}
-
-
-
-    // MARK: - Text Field Delegate
-
-   
-extension NewPlaceTableViewController: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    @objc private func textFieldChanged(){
-        if placeName.text?.isEmpty == false {
-            saveButton.isEnabled = true
-        } else {
-            saveButton.isEnabled = false
-        }
-    }
-}
-
-// MARK: - Work with Image
-
-extension NewPlaceTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func chooseInagePicker(sourse: UIImagePickerController.SourceType) {
-        if UIImagePickerController.isSourceTypeAvailable(sourse) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.allowsEditing = true // позволяет пользователю редактировать изображения
-            imagePicker.sourceType = sourse
-            present(imagePicker, animated: true)
-        }
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        placeImage.image = info[.editedImage] as? UIImage
-        placeImage.contentMode = .scaleAspectFill
-        placeImage.clipsToBounds = true
-        imageIsChanged = true
-        dismiss(animated: true)
+          /* newPlace = Place(
+         name: placeName.text!,
+         location: placeLocation.text,
+         type: placeType.text,
+         image: image,
+         restorantImage: []) */
+         }
         
+        @IBAction func canselAction(_ sender: UIBarButtonItem) {
+            dismiss(animated: true)
+        }
     }
-}
+    
+    
+    
+    // MARK: - Text Field Delegate
+    
+    
+    extension NewPlaceTableViewController: UITextFieldDelegate {
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            return true
+        }
+        
+        @objc private func textFieldChanged(){
+            if placeName.text?.isEmpty == false {
+                saveButton.isEnabled = true
+            } else {
+                saveButton.isEnabled = false
+            }
+        }
+    }
+    
+    // MARK: - Work with Image
+    
+    extension NewPlaceTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        
+        func chooseInagePicker(sourse: UIImagePickerController.SourceType) {
+            if UIImagePickerController.isSourceTypeAvailable(sourse) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.allowsEditing = true // позволяет пользователю редактировать изображения
+                imagePicker.sourceType = sourse
+                present(imagePicker, animated: true)
+            }
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            placeImage.image = info[.editedImage] as? UIImage
+            placeImage.contentMode = .scaleAspectFill
+            placeImage.clipsToBounds = true
+            imageIsChanged = true
+            dismiss(animated: true)
+            
+        }
+    }
+
