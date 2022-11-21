@@ -16,30 +16,14 @@ class Place: Object {
     @Persisted var type: String?
     @Persisted var imageData: Data?
     
+    convenience init(name: String, location: String?, type: String?, imageData: Data?) {
+        self.init()
+        self.name = name
+        self.location = location
+        self.type = type
+        self.imageData = imageData
+    }
     
-  let placesNames = [ "Mama Roma", "Tokyo City", "Giros", "Додо Пицца", "Теремок", "Cinnabon"]
-
-    func getPlaces() {
-        
-    
-        
-        for place in placesNames {
-            
-            let image = UIImage(named: place)
-            guard let imageData = image?.pngData() else { return }
-            
-            let newPlace = Place()
-            newPlace.name = place
-            newPlace.location = "Cпб"
-            newPlace.type = "Cafe"
-            newPlace.imageData = imageData
-            
-            StorageManager.saveObject(newPlace)
-            
-           
-            
-        }
-}
 
 
 }

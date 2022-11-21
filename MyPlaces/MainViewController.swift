@@ -6,15 +6,15 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UITableViewController {
     
-  
-    
-    // var cafeName = Place.getPlaces()
+    var cafeName: Results<Place>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        cafeName = realm.objects(Place.self)
 
 
     }
@@ -22,8 +22,8 @@ class MainViewController: UITableViewController {
     // MARK: - Table view data source
 
 
-    /* override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cafeName.count
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cafeName.isEmpty ? 0 : cafeName.count
     }
 
  
@@ -34,19 +34,25 @@ class MainViewController: UITableViewController {
         cell.nameLabel.text = place.name
         cell.locationLabel.text = place.location
         cell.typeLabel.text = place.type
+        cell.imageOfPlaces.image = UIImage(data: place.imageData!)
         
         cell.imageOfPlaces.layer.cornerRadius = cell.imageOfPlaces.frame.size.height / 2
         cell.imageOfPlaces.clipsToBounds = true
         
-        if place.image == nil {
-            cell.imageOfPlaces.image = UIImage(named: place.restorantImage[indexPath.row])
-        } else {
-            cell.imageOfPlaces.image = place.image
-        }
-        
+       
         return cell
         
-    } */
+    }
+    
+    // MARK: - Table View Delegate
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let place = cafeName[indexPath.row]
+            StorageManager.deleteObjct(place)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
     
 
 
@@ -61,11 +67,11 @@ class MainViewController: UITableViewController {
     }
     */
     
-    /* @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
         guard let newPlaceVC = segue.source as? NewPlaceTableViewController else { return }
         newPlaceVC.savePlace()
-        cafeName.append(newPlaceVC.newPlace!)
+        
         tableView.reloadData()
-    } */
+    }
    
 }

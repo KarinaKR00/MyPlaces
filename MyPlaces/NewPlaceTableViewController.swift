@@ -9,7 +9,7 @@ import UIKit
 
 class NewPlaceTableViewController: UITableViewController {
     
-    var newPlace = Place()
+    
     var imageIsChanged = false
     
     @IBOutlet var saveButton: UIBarButtonItem!
@@ -21,10 +21,6 @@ class NewPlaceTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        DispatchQueue.main.async {
-            self.newPlace.getPlaces()
-        }
         
         tableView.tableFooterView = UIView()
         saveButton.isEnabled = false
@@ -71,6 +67,7 @@ class NewPlaceTableViewController: UITableViewController {
     }
     func savePlace() {
         
+        
         var image: UIImage?
         
         if imageIsChanged {
@@ -79,18 +76,23 @@ class NewPlaceTableViewController: UITableViewController {
             image = UIImage(named: "eat")
         }
         
-          /* newPlace = Place(
-         name: placeName.text!,
-         location: placeLocation.text,
-         type: placeType.text,
-         image: image,
-         restorantImage: []) */
-         }
+        let imageData = image?.pngData()
         
-        @IBAction func canselAction(_ sender: UIBarButtonItem) {
+        let newPlace = Place(name: placeName.text!,
+                             location: placeLocation.text,
+                             type: placeType.text,
+                             imageData: imageData)
+        
+        StorageManager.saveObject(newPlace)
+        
+    }
+        
+        
+        @IBAction func canselAction(_ sender: Any) {
             dismiss(animated: true)
         }
     }
+
     
     
     
