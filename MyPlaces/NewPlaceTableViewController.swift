@@ -9,7 +9,7 @@ import UIKit
 
 class NewPlaceTableViewController: UITableViewController {
     
-    
+    var currentPlace: Place? 
     var imageIsChanged = false
     
     @IBOutlet var saveButton: UIBarButtonItem!
@@ -25,6 +25,7 @@ class NewPlaceTableViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         saveButton.isEnabled = false
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        setupEditScreen()
         
         
     }
@@ -83,8 +84,46 @@ class NewPlaceTableViewController: UITableViewController {
                              type: placeType.text,
                              imageData: imageData)
         
-        StorageManager.saveObject(newPlace)
+        if currentPlace != nil {
+            try! realm.write {
+                currentPlace?.name = newPlace.name
+                currentPlace?.location = newPlace.location
+                currentPlace?.type = newPlace.type
+                currentPlace?.imageData = newPlace.imageData
+            }
+            } else {
+                StorageManager.saveObject(newPlace)
+            }
+        }
         
+       
+        
+ 
+    
+    private func setupEditScreen() {
+        if currentPlace != nil {
+            setupNavigationBar()
+            imageIsChanged = true
+            guard let data = currentPlace?.imageData, let image = UIImage(data: data) else { return }
+            placeImage.image = image
+            placeImage.contentMode = .scaleAspectFill
+            placeName.text = currentPlace?.name
+            placeType.text = currentPlace?.type
+            placeLocation.text = currentPlace?.location
+        }
+    }
+    
+    private func setupNavigationBar() {
+        if let topItem = navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(
+                title: "",
+                style: .plain,
+                target: nil,
+                action: nil)
+        }
+        navigationItem.leftBarButtonItem = nil
+        title = currentPlace?.name
+        saveButton.isEnabled = true
     }
         
         
