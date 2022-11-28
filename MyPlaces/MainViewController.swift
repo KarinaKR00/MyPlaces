@@ -10,16 +10,33 @@ import RealmSwift
 
 class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    let searchController = UISearchController(searchResultsController: nil)
+    var cafeName: Results<Place>!
+    var ascendingSorting = true
+    var filteredPlaces: Results<Place>!
+    var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
+    
+    
     @IBOutlet var tableView: UITableView!
     @IBOutlet var segmentedControl: UISegmentedControl!
     
     @IBOutlet var reversedSortingButton: UIBarButtonItem!
-    var cafeName: Results<Place>!
-    var ascendingSorting = true
+   
 
     override func viewDidLoad() {
         super.viewDidLoad()
         cafeName = realm.objects(Place.self)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
 
 
     }
@@ -28,13 +45,24 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if isFiltering {
+            return filteredPlaces.count
+        }
         return cafeName.isEmpty ? 0 : cafeName.count
     }
 
  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
-        let place = cafeName[indexPath.row]
+        
+        var place = Place()
+        
+        if isFiltering {
+            place = filteredPlaces[indexPath.row]
+        } else {
+            place = cafeName[indexPath.row]
+        }
         
         cell.nameLabel.text = place.name
         cell.locationLabel.text = place.location
@@ -69,8 +97,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let place = cafeName[indexPath.row]
-            let newPlaceVC = segue.destination as! NewPlaceTableViewController
+            let place: Place
+            if isFiltering {
+                place = filteredPlaces[indexPath.row]
+            } else {
+                place = cafeName[indexPath.row]
+            }
+                        mlet newPlaceVC = segue.destination as! NewPlaceTableViewController
             newPlaceVC.currentPlace = place
         }
     }
@@ -92,6 +125,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBAction func reversedSorting(_ sender: Any) {
         
         ascendingSorting.toggle()
+        
         if ascendingSorting {
             reversedSortingButton.image = UIImage(named: "AZ")
         } else {
@@ -105,6 +139,19 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         } else {
             cafeName = cafeName.sorted(byKeyPath: "name", ascending: ascendingSorting)
         }
+        tableView.reloadData()
+    }
+}
+
+extension MainViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filtertContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    private func filtertContentForSearchText(_ searchText: String) {
+        
+        filteredPlaces = cafeName.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", searchText, searchText)
+        
         tableView.reloadData()
     }
 }
